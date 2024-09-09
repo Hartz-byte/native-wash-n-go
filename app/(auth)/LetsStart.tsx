@@ -1,13 +1,27 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
+import CustomButton from "@/components/CustomButton";
 import Image1 from "../../assets/images/image1.png";
 import Image3 from "../../assets/images/image3.png";
 import Logo from "../../assets/images/logo.png";
-import CustomButton from "@/components/CustomButton";
 
 const LetsStart = () => {
+  const pressHandler = () => {
+    router.push("/(auth)/SignUp");
+  };
+
+  const signInHandler = () => {
+    router.push("/(auth)/SignIn");
+  };
+
   return (
     <View style={styles.mainContainer}>
       {/* top images */}
@@ -29,13 +43,24 @@ const LetsStart = () => {
         </Text>
       </View>
 
-      {/* custom button */}
-      <CustomButton />
+      {/* custom button and sign-in button */}
+      <View>
+        {/* custom button */}
+        <CustomButton text="Let's Start" press={pressHandler} />
+
+        {/* sign-in button */}
+        <View style={styles.logoContainer}>
+          <TouchableWithoutFeedback onPress={signInHandler}>
+            <Text style={styles.signinText}>
+              Already have an account?{" "}
+              <Text style={styles.signinLink}>Sign in</Text>
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </View>
     </View>
   );
 };
-
-export default LetsStart;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -45,7 +70,7 @@ const styles = StyleSheet.create({
   imagesContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: 250,
+    height: 230,
   },
   image1: {},
   image3: {
@@ -53,13 +78,16 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: "center",
+    height: 260,
   },
   logo: {
     width: 340,
     height: 260,
   },
   textContainer: {
+    justifyContent: "center",
     alignItems: "center",
+    height: 160,
   },
   text: {
     fontSize: 24,
@@ -68,4 +96,16 @@ const styles = StyleSheet.create({
     color: "#808080",
     fontFamily: "Poppins-SemiBold",
   },
+  signinText: {
+    fontFamily: "Poppins-Medium",
+    color: "#808080",
+    marginTop: 20,
+  },
+  signinLink: {
+    color: "#000000",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
 });
+
+export default LetsStart;
