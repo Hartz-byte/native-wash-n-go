@@ -63,6 +63,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={secureTextEntry && !showPass}
+          keyboardType={icon === "phone" ? "numeric" : "default"}
         />
 
         {/* lock icon */}
