@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { router } from "expo-router";
+import axios from "axios";
 
 import Logo from "../../assets/images/logo.png";
 import Image3 from "../../assets/images/image3.png";
@@ -18,7 +20,37 @@ import CustomButton from "@/components/CustomButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 const SignIn = () => {
-  const signInHandler = () => {};
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  // handle sign-in
+  const signInHandler = async (phone: string, password: string) => {
+    if (!phone || !password) {
+      Alert.alert("Error", "Please fill all fields.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://tor.appdevelopers.mobi/api/login",
+        {
+          phone,
+          password,
+        }
+      );
+
+      // console.log("logged in: ", response.data);
+
+      if (response.data.status == true) {
+        router.push("/(auth)/Welcome");
+      } else {
+        Alert.alert("Error", response.data.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error during login: ", error);
+      Alert.alert("Error", "Login failed. Please try again.");
+    }
+  };
 
   return (
     <View>
@@ -40,10 +72,26 @@ const SignIn = () => {
         {/* custom inputs */}
         <View>
           {/* email */}
-          <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" />
+          {/* <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" /> */}
+
+          {/* phone */}
+          <CustomInput
+            title="Phone"
+            icon="phone"
+            placeholder="Enter your phone number"
+            value={phone}
+            onChangeText={setPhone}
+          />
 
           {/* password */}
-          <CustomInput title="Password" icon="lock" placeholder="password" />
+          <CustomInput
+            title="Password"
+            icon="lock"
+            placeholder="password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
         </View>
 
         {/* forgot password button */}
@@ -54,7 +102,10 @@ const SignIn = () => {
         </View>
 
         {/* custom button */}
-        <CustomButton text="Sign In" press={signInHandler} />
+        <CustomButton
+          text="Sign In"
+          press={() => signInHandler(phone, password)}
+        />
 
         {/* border */}
         <View style={styles.borderContainer}>

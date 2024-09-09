@@ -1,12 +1,15 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import Logo from "../../assets/images/logo.png";
 import CustomButton from "@/components/CustomButton";
 
 const Welcome = () => {
-  const logoutHandler = () => {};
+  const logoutHandler = () => {
+    router.push("/(auth)/SignIn");
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 import { Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 
@@ -14,13 +14,25 @@ interface CustomInputProps {
   title: string;
   icon: string;
   placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
   title,
   icon,
   placeholder,
+  value,
+  onChangeText,
+  secureTextEntry = false,
 }) => {
+  const [showPass, setShowPass] = useState(false);
+
+  const privateHandler = () => {
+    setShowPass(!showPass);
+  };
+
   return (
     <View style={styles.mainContainer}>
       {/* title */}
@@ -28,8 +40,15 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
       {/* input field */}
       <View style={styles.inputContainer}>
-        {icon === "email" ? (
-          <Fontisto name={icon} size={24} color="#808080" style={styles.icon} />
+        {icon === "phone" ? (
+          // <Fontisto name={icon} size={24} color="#808080" style={styles.icon} />
+
+          <AntDesign
+            name="phone"
+            size={24}
+            color="#808080"
+            style={styles.icon}
+          />
         ) : icon === "lock" ? (
           <Feather name={icon} size={24} color="#808080" style={styles.icon} />
         ) : (
@@ -41,14 +60,21 @@ const CustomInput: React.FC<CustomInputProps> = ({
           style={styles.input}
           placeholder={placeholder}
           placeholderTextColor="#808080"
+          value={value}
+          onChangeText={onChangeText}
+          secureTextEntry={secureTextEntry && !showPass}
         />
 
         {/* lock icon */}
-        {icon === "lock" && (
-          <TouchableOpacity>
+        {icon === "lock" && showPass == false ? (
+          <TouchableOpacity onPress={privateHandler}>
             <AntDesign name="eyeo" size={24} color="black" />
           </TouchableOpacity>
-        )}
+        ) : icon === "lock" && showPass == true ? (
+          <TouchableOpacity onPress={privateHandler}>
+            <Feather name="eye-off" size={24} color="black" />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );

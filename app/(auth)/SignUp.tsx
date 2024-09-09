@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { router } from "expo-router";
+import axios from "axios";
 
 import Logo from "../../assets/images/logo.png";
 import Image3 from "../../assets/images/image3.png";
@@ -17,11 +19,51 @@ import CustomButton from "@/components/CustomButton";
 
 const SignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
-
-  const signUpHandler = () => {};
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
+  };
+
+  // handle sign-up
+  const signUpHandler = async (
+    phone: string,
+    password: string,
+    name: string
+  ) => {
+    if (!name || !phone || !password) {
+      Alert.alert("Error", "Please fill all fields.");
+      return;
+    }
+
+    if (!isChecked) {
+      Alert.alert("Error", "Please agree to the terms and conditions.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://tor.appdevelopers.mobi/api/register",
+        {
+          phone,
+          password,
+          name,
+        }
+      );
+
+      // console.log("registered: ", response.data);
+
+      if (response.data.status == true) {
+        router.replace("/(auth)/SignIn");
+      } else {
+        Alert.alert("Error", response.data.message || "Something went wrong");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Registration failed");
+      console.error(error);
+    }
   };
 
   return (
@@ -44,13 +86,35 @@ const SignUp = () => {
         {/* custom inputs */}
         <View>
           {/* name */}
-          <CustomInput title="Name" icon="name" placeholder="Enter your name" />
+          <CustomInput
+            title="Name"
+            icon="name"
+            placeholder="Enter your name"
+            value={name}
+            onChangeText={setName}
+          />
 
           {/* email */}
-          <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" />
+          {/* <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" /> */}
+
+          {/* phone */}
+          <CustomInput
+            title="Phone"
+            icon="phone"
+            placeholder="Enter your phone number"
+            value={phone}
+            onChangeText={setPhone}
+          />
 
           {/* password */}
-          <CustomInput title="Password" icon="lock" placeholder="password" />
+          <CustomInput
+            title="Password"
+            icon="lock"
+            placeholder="password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
         </View>
 
         {/* check box */}
@@ -65,7 +129,10 @@ const SignUp = () => {
         </View>
 
         {/* custom button */}
-        <CustomButton text="Sign Up" press={signUpHandler} />
+        <CustomButton
+          text="Sign Up"
+          press={() => signUpHandler(phone, password, name)}
+        />
 
         {/* already have an account text */}
         <View style={styles.accountContainer}>
