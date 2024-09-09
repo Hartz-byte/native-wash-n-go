@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,11 +25,17 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+    <>
+      {/* statusbar */}
+      <StatusBar barStyle="dark-content" />
 
-      <Stack.Screen name="+not-found" />
-    </Stack>
+      {/* stack */}
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </>
   );
 }
