@@ -11,7 +11,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({ text, press }) => {
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
-        style={[styles.button, { width: text === "Sign In" ? "100%" : "90%" }]}
+        style={[
+          styles.button,
+          { width: text === "Let's Start" ? "90%" : "100%" },
+        ]}
         onPress={press}
       >
         <Text style={styles.buttonText}>{text}</Text>

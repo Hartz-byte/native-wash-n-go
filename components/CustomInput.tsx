@@ -30,8 +30,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <View style={styles.inputContainer}>
         {icon === "email" ? (
           <Fontisto name={icon} size={24} color="#808080" style={styles.icon} />
-        ) : (
+        ) : icon === "lock" ? (
           <Feather name={icon} size={24} color="#808080" style={styles.icon} />
+        ) : (
+          <Feather name="user" size={24} color="#808080" style={styles.icon} />
         )}
 
         {/* text input */}
@@ -70,9 +72,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   icon: {
-    width: 24,
-    height: 24,
-    marginRight: 10,
+    width: 35,
   },
   input: {
     flex: 1,

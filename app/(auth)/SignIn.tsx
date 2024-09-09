@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 
 import Logo from "../../assets/images/logo.png";
 import Image3 from "../../assets/images/image3.png";
@@ -36,11 +37,14 @@ const SignIn = () => {
           </Text>
         </View>
 
-        {/* custom input field email */}
-        <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" />
+        {/* custom inputs */}
+        <View>
+          {/* email */}
+          <CustomInput title="Email" icon="email" placeholder="xyz@gmail.com" />
 
-        {/* custom input field password */}
-        <CustomInput title="Password" icon="lock" placeholder="password" />
+          {/* password */}
+          <CustomInput title="Password" icon="lock" placeholder="password" />
+        </View>
 
         {/* forgot password button */}
         <View style={styles.forgotButton}>
@@ -74,7 +78,9 @@ const SignIn = () => {
 
         {/* don't have an account text */}
         <View style={styles.accountContainer}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => router.push("/(auth)/SignUp")}
+          >
             <Text style={styles.accountText}>
               Don’t have an account?{" "}
               <Text style={styles.signupText}>Sign Up</Text>
