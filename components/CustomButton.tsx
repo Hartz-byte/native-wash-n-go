@@ -10,7 +10,10 @@ interface CustomButtonProps {
 const CustomButton: React.FC<CustomButtonProps> = ({ text, press }) => {
   return (
     <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={press}>
+      <TouchableOpacity
+        style={[styles.button, { width: text === "Sign In" ? "100%" : "90%" }]}
+        onPress={press}
+      >
         <Text style={styles.buttonText}>{text}</Text>
       </TouchableOpacity>
     </View>
@@ -22,7 +25,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    width: "90%",
     height: 61,
     backgroundColor: "#94C7FF",
     borderRadius: 32,
